@@ -34,21 +34,21 @@ export function getRandomName() {
 
 export function getRandomSmsText() {
   const messages = [
-    "Hello! How are you today?",
-    "Just checking in. What's up?",
-    "Hey, did you hear the latest news?",
-    "I hope you have a fantastic day!",
-    "Thinking of you. 😊",
-    "What's for dinner tonight?",
-    "Did you know that laughter is the best medicine?",
-    "Planning anything exciting for the weekend?",
-    "Sending positive vibes your way!",
-    "Remember to take breaks and relax!",
-    "Random fact: Honey never spoils.",
-    "Hope you're enjoying your favorite music!",
-    "Just wanted to say you're awesome!",
-    "Ready for a new adventure?",
-    "Sending virtual hugs. 🤗",
+    "Hello! How are you?",
+    "Just checking",
+    "did you hear the",
+    "I hope you have ",
+    "Thinking of you.😊",
+    "What's for dinner",
+    "Did you know that",
+    "Planning anything",
+    "Sending positive",
+    "Remember to take",
+    "Honey never spoils",
+    "Hope you're enjoy!",
+    "Just wanted to say",
+    "Ready for a?",
+    "Sending virtual🤗",
   ];
 
   const randomIndex = Math.floor(Math.random() * messages.length);

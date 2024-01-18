@@ -57,7 +57,9 @@ const Header = () => {
     navigate("/results?search_query=" + encodeURI(e.target.innerText));
   };
 
-  const handleSearchButtonClick = () => {
+  const handleFormSubmitClick = (e) => {
+    e.preventDefault();
+    setShowSuggestions(false);
     navigate("/results?search_query=" + encodeURI(searchText));
   };
 
@@ -79,7 +81,10 @@ const Header = () => {
             />
           </Link>
         </div>
-        <div className="relative col-span-8 flex justify-center text-center">
+        <form
+          onSubmit={(e) => handleFormSubmitClick(e)}
+          className="relative col-span-8 flex justify-center text-center"
+        >
           <input
             type="tex"
             value={searchText}
@@ -93,8 +98,9 @@ const Header = () => {
             className="w-3/4 border p-2 rounded-l-full pl-2"
           />
           <button
+            type="submit"
             className="border rounded-r-full w-16 p-2 bg-gray-100"
-            onClick={handleSearchButtonClick}
+            // onClick={handleSearchButtonClick}
           >
             <img src="/svg/search.svg" className="w-5 h-5" />
           </button>
@@ -106,7 +112,7 @@ const Header = () => {
               X
             </button>
           )}
-        </div>
+        </form>
         {showSuggestions && suggestions?.length > 0 && (
           <ul className="absolute left-1/4 top-14 bg-gray-100 rounded-md flex flex-col gap-4 w-1/3 p-2">
             {suggestions.map((item, index) => (

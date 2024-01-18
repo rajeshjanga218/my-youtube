@@ -29,9 +29,11 @@ const WatchContainer = () => {
         <CommentsContainer />
       </div>
 
-      <div className="col-span-3 bg-slate-300">
-        <LiveChat />
-        <ChatBox />
+      <div className="col-span-3 p-1">
+        <div className="border">
+          <LiveChat />
+          <ChatBox />
+        </div>
       </div>
     </div>
   );
