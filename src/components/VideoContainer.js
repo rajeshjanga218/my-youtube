@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import VideoCard from "./VideoCard";
 import { YOUTUBE_API } from "../utils/constants";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const VideoContainer = () => {
+  const useParams = useSearchParams();
   const [videoList, setVideoList] = useState([]);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const VideoContainer = () => {
     setVideoList(json?.items);
   };
   return (
-    <div className="flex flex-wrap justify-center items-center">
+    <div className="flex flex-wrap gap-2 justify-center">
       {videoList?.map((video) => (
         <Link key={video?.id} to={"/watch?v=" + video.id}>
           <VideoCard videoInfo={video} />

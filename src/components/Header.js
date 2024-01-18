@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
-import { SEARCH_API } from "../utils/constants";
+// import { SEARCH_API } from "../utils/constants";
 import { cacheSuggestions } from "../utils/serachSlice";
+import { dummySuggestion } from "../utils/helper";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const cachedResults = useSelector((store) => store.search);
 
   const handleMenuClick = () => {
@@ -25,12 +29,6 @@ const Header = () => {
     return () => clearInterval(timer);
   }, [searchText]);
 
-  const sampleSuggestions = async (input) => {
-    if (!input) return;
-    const dummydata = ["search", "cricket", "dhoni", "kohli", "data"];
-    return dummydata;
-  };
-
   const getSuggestion = async () => {
     try {
       // const response = await fetch(
@@ -38,21 +36,31 @@ const Header = () => {
       //     searchText
       //   )}`
       // );
+      const response = await dummySuggestion(searchText);
+      console.log(response);
       // const json = await response.json();
-      // console.log(json);
-      const data = await sampleSuggestions(searchText);
+
       dispatch(
         cacheSuggestions({
-          [searchText]: data,
+          [searchText]: response,
         })
       );
-      setSuggestions(data);
-      console.log(data);
-    } catch (e) {
-      console.log(e);
+      setSuggestions(response);
+    } catch (error) {
+      console.log(error);
     }
   };
-  console.log(searchText);
+
+  const handleSuggestionClick = (e) => {
+    setSearchText(e.target.innerText);
+    setShowSuggestions(false);
+    navigate("/results?search_query=" + encodeURI(e.target.innerText));
+  };
+
+  const handleSearchButtonClick = () => {
+    navigate("/results?search_query=" + encodeURI(searchText));
+  };
+
   return (
     <>
       <div className="grid grid-cols-12 p-2 border-b">
@@ -69,26 +77,53 @@ const Header = () => {
             className="h-10 w-15"
           />
         </div>
-        <div className="col-span-8  text-center">
+        <div className="relative col-span-8 flex justify-center text-center">
           <input
             type="tex"
             value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
+            onChange={(event) => {
+              setSearchText(event.target.value);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
             placeholder="search"
-            className="w-3/4 border p-2"
+            className="w-3/4 border p-2 rounded-l-full pl-2"
           />
+          <button
+            className="border rounded-r-full w-16 p-2 bg-gray-100"
+            onClick={handleSearchButtonClick}
+          >
+            <img src="/svg/search.svg" className="w-5 h-5" />
+          </button>
+          {searchText && (
+            <button
+              className="absolute right-40 inset-y-0"
+              onClick={() => setSearchText("")}
+            >
+              X
+            </button>
+          )}
         </div>
+        {showSuggestions && suggestions?.length > 0 && (
+          <ul className="absolute left-1/4 top-14 bg-gray-100 rounded-md flex flex-col gap-4 w-1/3 p-2">
+            {suggestions.map((item, index) => (
+              <li key={index}>
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onMouseDown={(e) => handleSuggestionClick(e)}
+                >
+                  <img src="/svg/search.svg" alt="serach" className="w-4 h-4" />
+                  <p className="">{item}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="col-span-2 flex justify-end">
           <img src="/svg/profile.svg" alt="profile" className="w-10 h-10" />
         </div>
       </div>
-      {suggestions && searchText && (
-        <ul className="absolute left-1/3 bg-slate-400 rounded-md flex flex-col gap-4 w-1/4">
-          {suggestions.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-      )}
     </>
   );
 };
