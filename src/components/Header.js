@@ -4,7 +4,7 @@ import { toggleMenu } from "../utils/appSlice";
 // import { SEARCH_API } from "../utils/constants";
 import { cacheSuggestions } from "../utils/serachSlice";
 import { dummySuggestion } from "../utils/helper";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -64,18 +64,20 @@ const Header = () => {
   return (
     <>
       <div className="grid grid-cols-12 p-2 border-b">
-        <div className="col-span-2 flex gap-2">
+        <div className="col-span-2 flex items-center gap-2">
           <img
             src="/svg/hamburger.svg"
             alt="hamburger"
             className="h-8 w-8 cursor-pointer"
             onClick={handleMenuClick}
           />
-          <img
-            src="/images/youtubeLogo.jpg"
-            alt="youtubeLogo"
-            className="h-10 w-15"
-          />
+          <Link to="/">
+            <img
+              src="/svg/youTubeLogo.svg"
+              alt="youtubeLogo"
+              className="h-[65%] w-[65%]"
+            />
+          </Link>
         </div>
         <div className="relative col-span-8 flex justify-center text-center">
           <input
