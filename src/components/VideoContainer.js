@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import VideoCard from "./VideoCard";
 import { YOUTUBE_API } from "../utils/constants";
 import { Link, useSearchParams } from "react-router-dom";
+import Loader from "./Loader";
 
 const VideoContainer = () => {
   const useParams = useSearchParams();
@@ -17,6 +18,8 @@ const VideoContainer = () => {
     // console.log(json);
     setVideoList(json?.items);
   };
+
+  if (videoList.length < 1) return <Loader />;
   return (
     <div className="flex flex-wrap gap-2 justify-center">
       {videoList?.map((video) => (
